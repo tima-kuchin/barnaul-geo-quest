@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Меню</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container fullscreen-center">
+        <div id="menu">
+            <div id="menuLogo">Барнаул-Угадай</div>
+            <div id="buttonContainer">
+                <button id="startGameButton">Начать игру</button>
+                <button id="historyButton">История игр</button>
+                <button id="settingsButton">Настройки</button>
+                <form id="logoutForm" method="post" action="/logout">
+                    <button type="submit">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('startGameButton').addEventListener('click', function() {
+            window.location.href = '/play';
+        });
+
+        document.getElementById('historyButton').addEventListener('click', function() {
+            window.location.href = '/history';
+        });
+
+        document.getElementById('settingsButton').addEventListener('click', function() {
+            window.location.href = '/settings';
+        });
+    </script>
+</body>
+</html>

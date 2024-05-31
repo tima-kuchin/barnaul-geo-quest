@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+sqlalchemy
+psycopg2
+jinja2
+python-dotenv
+bcrypt==3.1.7
+passlib==1.7.4
+python-jose

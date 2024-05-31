@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Войти</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="container fullscreen-center">
+    <div id="login" class="form-container">
+        <h2>Войти</h2>
+        <form method="post" action="/login">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" value="{{ username }}" required>
+            <span class="error">{{ errors.username }}</span>
+
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
+            <span class="error">{{ errors.password }}</span>
+
+            <button type="submit">Войти</button>
+        </form>
+        <p>У вас нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
+    </div>
+</div>
+</body>
+</html>

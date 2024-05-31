@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Регистрация</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container fullscreen-center">
+        <div class="form-container">
+            <h2>Регистрация</h2>
+            <form method="post" action="/register">
+                <label for="username">Имя пользователя:</label>
+                <input type="text" id="username" name="username" required>
+                <span class="error">{{ errors.username }}</span>
+
+                <label for="full_name">Полное имя:</label>
+                <input type="text" id="full_name" name="full_name" required>
+                <span class="error">{{ errors.full_name }}</span>
+
+                <label for="map_api_key">API ключ Яндекс карт:</label>
+                <input type="text" id="map_api_key" name="map_api_key" required>
+                <span class="error">{{ errors.map_api_key }}</span>
+
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" required>
+                <span class="error">{{ errors.password }}</span>
+
+                <label for="confirm_password">Повторите пароль:</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <span class="error">{{ errors.confirm_password }}</span>
+
+                <button type="submit">Зарегистрироваться</button>
+            </form>
+            <p>У вас уже есть аккаунт? <a href="/login">Войти</a></p>
+        </div>
+    </div>
+</body>
+</html>
