@@ -90,11 +90,11 @@ const showResultPopup = (realCoords, guessCoords, distance) => {
     if (resultMap) resultMap.remove();
     resultMap = L.map(elements.resultMap).setView(realCoords, 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(resultMap);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap contributors'}).addTo(resultMap);
 
     L.marker(realCoords).addTo(resultMap);
     L.marker(guessCoords).addTo(resultMap);
-    L.polyline([realCoords, [guessCoords.lat, guessCoords.lng]], { color: 'red' }).addTo(resultMap);
+    L.polyline([realCoords, [guessCoords.lat, guessCoords.lng]], {color: 'red'}).addTo(resultMap);
 
     document.getElementById('distance').textContent = `Расстояние: ${Math.round(distance)} метров`;
     document.getElementById('points').textContent = `Очки: ${calculatePoints(distance)}`;
@@ -121,9 +121,8 @@ const showGameOverPopup = () => {
     elements.gameOverPopup.style.display = 'flex';
     const totalDistance = roundData.reduce((acc, data) => acc + data.distance, 0);
     const totalTime = roundData.reduce((acc, data) => acc + (data.time.split(':')[0] * 60 + parseInt(data.time.split(':')[1])), 0);
-    const report = roundData.map(data => `Раунд ${data.round}: ${data.distance} м - ${data.points} очков - ${data.time}`).join('<br>') +
-                   `<br>Итого: ${totalDistance} м - ${score} очков - ${formatTime(totalTime)}`;
-    elements.gameOverReport.innerHTML = report;
+    elements.gameOverReport.innerHTML = roundData.map(data => `Раунд ${data.round}: ${data.distance} м - ${data.points} очков - ${data.time}`).join('<br>') +
+        `<br>Итого: ${totalDistance} м - ${score} очков - ${formatTime(totalTime)}`;
 
     // Сохранить попытку, если все раунды пройдены и таймер не истек
     if (currentRound >= totalRounds && getTimeRemaining() > 0) {
@@ -138,11 +137,11 @@ const showGameOverPopup = () => {
                 total_time: formatTime(totalTime)
             })
         }).then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                showMessagePopup(data.error);
-            }
-        });
+            .then(data => {
+                if (data.error) {
+                    showMessagePopup(data.error);
+                }
+            });
     }
 };
 
@@ -160,7 +159,7 @@ const initMap = () => {
     if (map) map.remove();
     map = L.map('map').setView([53.347378, 83.77841], 12);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap contributors'}).addTo(map);
 
     map.on('click', e => {
         guessCoords = e.latlng;
@@ -184,13 +183,13 @@ const initMap = () => {
 
 const initEventListeners = () => {
     const events = [
-        { element: elements.guessButton, event: 'click', handler: checkGuess },
-        { element: elements.closePopup, event: 'click', handler: closePopup },
-        { element: elements.closeMessagePopup, event: 'click', handler: closeMessagePopup },
-        { element: elements.exitToMenu, event: 'click', handler: exitToMenu },
-        { element: elements.playAgain, event: 'click', handler: playAgain },
+        {element: elements.guessButton, event: 'click', handler: checkGuess},
+        {element: elements.closePopup, event: 'click', handler: closePopup},
+        {element: elements.closeMessagePopup, event: 'click', handler: closeMessagePopup},
+        {element: elements.exitToMenu, event: 'click', handler: exitToMenu},
+        {element: elements.playAgain, event: 'click', handler: playAgain},
     ];
-    events.forEach(({ element, event, handler }) => {
+    events.forEach(({element, event, handler}) => {
         element.removeEventListener(event, handler);
         element.addEventListener(event, handler);
     });
@@ -220,18 +219,37 @@ const checkGuess = () => {
     }
 };
 
+const loadAnotherLocation = () => {
+    fetch('/next_location')
+        .then(response => response.json())
+        .then(data => {
+            coord = data.coord;
+            initPanorama();
+        });
+};
+
 const initPanorama = () => {
     ymaps.ready(() => {
+        if (player) {
+            player.destroy();
+            player = null;
+        }
         if (!ymaps.panorama.isSupported()) return;
-        ymaps.panorama.locate(coord).done(panoramas => {
-            if (panoramas.length > 0) {
-                if (player) player.destroy();
-                player = new ymaps.panorama.Player('player', panoramas[0], { direction: [256, 16] });
-
-                const removeMarkers = () => player.getPanorama().getMarkers().forEach(marker => marker.properties.unsetAll());
+        ymaps.panorama.createPlayer('player', coord).done(it => {
+                player = it
+                const removeMarkers = () => player.getPanorama()
+                    .getMarkers()
+                    .forEach(marker => marker.properties.unsetAll());
                 removeMarkers();
                 player.events.add('panoramachange', removeMarkers);
+            },
+            error => {
+                if (error.message === "No panoramas") {
+                    loadAnotherLocation();
+                } else {
+                    alert(error.message)
+                }
             }
-        }, error => alert(error.message));
+        );
     });
 };
