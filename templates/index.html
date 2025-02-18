@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Geoguessr на Leaflet и Яндекс Панорамах</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey={{ user.map_api_key }}"></script>
+</head>
+<body>
+    <div id="game">
+        <div id="logo">Барнаул-Угадай</div>
+        <div id="info">
+            <span>Раунд: <span id="currentRound"></span></span>
+            <span>Очки: <span id="score"></span></span>
+            <span>Имя: <span id="playerName">{{ user.full_name }}</span></span>
+        </div>
+        <div id="timer">05:00</div>
+        <div id="player"></div>
+        <div id="mapContainer">
+            <div id="map"></div>
+            <button id="guessButton">Угадать</button>
+        </div>
+        <div id="resultPopup" style="display: none;">
+            <div id="resultMap"></div>
+            <div id="distance"></div>
+            <div id="points"></div>
+            <button id="closePopup">Следующий</button>
+        </div>
+        <div id="messagePopup" style="display: none;">
+            <div id="message"></div>
+            <button id="closeMessagePopup">Закрыть</button>
+        </div>
+        <div id="gameOverPopup" style="display: none;">
+            <div id="gameOverMessage"><h2>Конец игры</h2></div>
+            <div id="gameOverReport"></div>
+            <button id="exitToMenu">Выйти в меню</button>
+            <button id="playAgain">Играть снова</button>
+        </div>
+    </div>
+    <script>
+        let coord = {{ coord }};
+    </script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

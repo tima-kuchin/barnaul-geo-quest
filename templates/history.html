@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>История игр</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container fullscreen-center">
+        <div id="history" class="history-container">
+            <h2>История игр</h2>
+            <div class="history-summary">
+                <p>Всего закончено игр: {{ total_attempts }}</p>
+                <p>Ранг: новичок</p>
+            </div>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Погрешность, м</th>
+                        <th>Всего очков</th>
+                        <th>Времени затрачено</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attempt in attempts %}
+                    <tr>
+                        <td>{{ attempt.date }}</td>
+                        <td>{{ attempt.total_distance }}</td>
+                        <td>{{ attempt.total_points }}</td>
+                        <td>{{ attempt.total_time }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="exit-button">
+                <button onclick="window.location.href='/'">Выйти в меню</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
